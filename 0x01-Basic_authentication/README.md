@@ -1,40 +1,42 @@
-Here's a simple README file for your project:
+# Simple API
 
----
+Simple HTTP API for playing with `User` model.
 
-# 0x01. Basic Authentication
 
-## Project Overview
-This project involves implementing Basic Authentication on a simple API to understand the authentication process. While it's recommended in the industry to use existing modules or frameworks for Basic Authentication, this project is designed for educational purposes, walking through each step to gain a thorough understanding.
+## Files
 
-## Learning Objectives
-By the end of this project, you should be able to explain the following concepts:
+### `models/`
 
-- **Authentication**: Understanding what authentication means and its importance in securing APIs.
-- **Base64**: Learning what Base64 encoding is, how to encode a string in Base64, and its role in Basic Authentication.
-- **Basic Authentication**: Understanding the concept of Basic Authentication and how it is implemented.
-- **Authorization Header**: Learning how to send the Authorization header in HTTP requests.
+- `base.py`: base of all models of the API - handle serialization to file
+- `user.py`: user model
 
-## Resources
-To successfully complete this project, the following resources can be helpful:
+### `api/v1`
 
-- [REST API Authentication Mechanisms](#)
-- [Base64 in Python](#)
-- [HTTP header Authorization](#)
-- [Flask](#)
-- [Base64 - concept](#)
+- `app.py`: entry point of the API
+- `views/index.py`: basic endpoints of the API: `/status` and `/stats`
+- `views/users.py`: all users endpoints
 
-## Background Context
-In this project, you will learn the basics of authentication by implementing a simple Basic Authentication mechanism on an API. This hands-on experience will provide a solid understanding of how authentication works in real-world applications.
 
-## How to Use
-To get started with the project, follow these steps:
+## Setup
 
-1. Set up your development environment.
-2. Walk through the resources provided to understand the concepts.
-3. Implement Basic Authentication in your API.
-4. Test your implementation by sending HTTP requests with the Authorization header.
+```
+$ pip3 install -r requirements.txt
+```
 
----
 
-This README should give you a clear understanding of the project's scope and objectives.
+## Run
+
+```
+$ API_HOST=0.0.0.0 API_PORT=5000 python3 -m api.v1.app
+```
+
+
+## Routes
+
+- `GET /api/v1/status`: returns the status of the API
+- `GET /api/v1/stats`: returns some stats of the API
+- `GET /api/v1/users`: returns the list of users
+- `GET /api/v1/users/:id`: returns an user based on the ID
+- `DELETE /api/v1/users/:id`: deletes an user based on the ID
+- `POST /api/v1/users`: creates a new user (JSON parameters: `email`, `password`, `last_name` (optional) and `first_name` (optional))
+- `PUT /api/v1/users/:id`: updates an user based on the ID (JSON parameters: `last_name` and `first_name`)
