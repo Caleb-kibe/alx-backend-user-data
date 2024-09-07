@@ -5,6 +5,7 @@
 from flask import request
 from typing import List, TypeVar
 import fnmatch
+import os
 
 
 class Auth:
@@ -30,3 +31,11 @@ class Auth:
     def current_user(self, request=None) -> TypeVar('User'):
         """retrieves the current user based on the request"""
         return None
+    
+    def session_cookie(self, request=None):
+        """ Returns a cookie value from a request
+        """
+        if request is None:
+            return None
+        cookie_name = os.getenv("SESSION_NAME", "_my_sessio_id")
+        return request.cookies.get(cookie_name)
