@@ -6,7 +6,6 @@ from os import getenv
 from api.v1.views import app_views
 from api.v1.auth.auth import Auth
 from api.v1.auth.session_auth import SessionAuth
-from api.v1.auth.basic_auth import BasicAuth
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
@@ -54,10 +53,11 @@ def before_request_handler():
             '/api/v1/status/',
             '/api/v1/unauthorized/',
             '/api/v1/forbidden/',
+            '/api/v1/auth_session/login/',
         ]
         if auth.require_auth(request.path, excluded_paths):
             auth_header = auth.authorization_header(request)
-            if auth_header is None:
+            if auth_header is None and auth.session_cookie(request) is None:
                 abort(401)
             user = auth.current_user(request)
             if user is None:
