@@ -11,9 +11,14 @@ class User(Base):
     """ class User that maps to the database table users
     """
     __tablename__ = 'users'
-    
+
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
     session_id = Column(String, nullable=False)
     reset_token = Column(String, nullable=False)
+
+    def __repr__(self):
+        """ string representation of the object
+        """
+        return (f"<User(id={self.id}, email='{self.email}')>")
