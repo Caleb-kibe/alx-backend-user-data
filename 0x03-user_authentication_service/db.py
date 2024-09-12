@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """DB module
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, tuple_
 from sqlalchemy.exc import NoResultFound, InvalidRequestError
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy.orm import sessionmaker
@@ -60,12 +60,16 @@ class DB:
             NoResultFound: If no user is found
             InvalidRequestError: If invalid arguments are passed
         """
-        session = self._session
+        attrs, vals = [], []
+        for attr, val in kwargs.items():
+            if not hasattr(User, attr):
+                raise InvalidRequestError()
+            attrs.append(getattr(User, attr))
+            vals.append(val)
 
-        try:
-            user = session.query(User).filter_by(**kwargs).one()
-            return user
-        except NoResultFound:
-            raise NoResultFound("No user found with the specified parameters")
-        except InvalidRequestError:
-            raise InvalidRequestError("Invalid query arguments")
+        session = self._session
+        query = session.query(User)
+        user = query.filter(tuple_(*attrs).in_([tuple(vals)])).first()
+        if not user:
+            raise NoResultFound()
+        return user
