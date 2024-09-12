@@ -34,12 +34,7 @@ class DB:
         """ Adds a user to the database
         """
         new_user = User(email=email, hashed_password=hashed_password)
-        try:
-            self._session.add(new_user)
-            self._session.commit()
-        except Exception as e:
-            print(f"Error adding new user to the database: {e}")
-            self._session.rollback()
-            raise
+        self._session.add(new_user)
+        self._session.commit()
 
         return new_user
